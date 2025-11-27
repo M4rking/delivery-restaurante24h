@@ -54,7 +54,7 @@
                 category: "bebidas",
                 price: 200,
                 description: "Sumo natural de maracujá com gelo.",
-                image: "/imagem/sumomaracujá.jpeg"
+                image: "imagem/sumomaracujá.jpeg"
             },
             {
                 id: 8,
@@ -62,7 +62,7 @@
                 category: "bebidas",
                 price: 150,
                 description: "Refrigerante Coca-Cola lata 330ml.",
-                image: "/imagem/cola.jpg"
+                image: "imagem/cola.jpg"
             },
             {
                 id: 9,
@@ -78,7 +78,7 @@
                 category: "bebidas",
                 price: 180,
                 description: "Cerveja nacional Strela garrafa 330ml.",
-                image: "/imagem/cerveja.jpg"
+                image: "imagem/cerveja.jpg"
             },
             {
                 id: 11,
@@ -86,7 +86,7 @@
                 category: "sobremesas",
                 price: 300,
                 description: "Pudim de coco cremoso caseiro.",
-                image: "/imagem/pudim.jpg"
+                image: "imagem/pudim.jpg"
             },
             {
                 id: 12,
@@ -582,4 +582,5 @@
             setupEventListeners();
             setupHomeCategories();
         });
+
         
