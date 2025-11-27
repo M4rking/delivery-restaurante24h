@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante 24h - Gastronomia Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Mobile e Desktop -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo" data-section="home">
+                    <div class="logo-text">
+                        <img src="./logotio/logo.png" alt="Restaurante 24h">
+                        <span>Restaurante 24h</span>
+                    </div>
+                </a>
+                
+                <!-- Navegação para Desktop -->
+                <nav class="desktop-nav">
+        <a href="#" class="desktop-nav-item active" data-section="home">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="#" class="desktop-nav-item" data-section="menu">
+            <i class="fas fa-utensils"></i>
+            <span>Cardápio</span>
+        </a>
+        <a href="#" class="desktop-nav-item" data-section="cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Meu Pedido</span>
+        </a>
+    </nav>
+                
+                <div class="cart-badge">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Floating Action Button-->
+    <div class="fab" id="fab-cart" style="display: none;">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="fab-badge" id="fab-badge">0</span>
+    </div>
+
+    <!-- Bottom Navigation (apenas para mobile) -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-section="home">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="#" class="nav-item" data-section="menu">
+            <i class="fas fa-utensils"></i>
+            <span>Cardápio</span>
+        </a>
+        <a href="#" class="nav-item" data-section="cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Pedido</span>
+        </a>
+    </nav>
+
+    <!-- Seções -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Restaurante 24h</h1>
+                        <p>Experiência gastronômica premium a qualquer hora. Sabores sofisticados entregues na sua casa.</p>
+                        <a href="#" class="btn" data-section="menu">
+                            <i class="fas fa-utensils"></i>
+                            Explorar Cardápio
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="quick-categories">
+                    <h2>Nossas Especialidades</h2>
+                    <div class="menu-categories">
+                        <button class="category-btn active" data-category="all">
+                            <i class="fas fa-star"></i> Todos
+                        </button>
+                        <button class="category-btn" data-category="pratos">
+                            <i class="fas fa-utensils"></i> Pratos
+                        </button>
+                        <button class="category-btn" data-category="bebidas">
+                            <i class="fas fa-wine-glass-alt"></i> Bebidas
+                        </button>
+                        <button class="category-btn" data-category="sobremesas">
+                            <i class="fas fa-ice-cream"></i> Sobremesas
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="section">
+            <div class="menu">
+                <div class="container">
+                    <h2>Cardápio Exclusivo</h2>
+                    <div class="menu-categories">
+                        <button class="category-btn active" data-category="all">
+                            <i class="fas fa-star"></i> Todos
+                        </button>
+                        <button class="category-btn" data-category="pratos">
+                            <i class="fas fa-utensils"></i> Pratos Principais
+                        </button>
+                        <button class="category-btn" data-category="bebidas">
+                            <i class="fas fa-wine-glass-alt"></i> Bebidas
+                        </button>
+                        <button class="category-btn" data-category="sobremesas">
+                            <i class="fas fa-ice-cream"></i> Sobremesas
+                        </button>
+                    </div>
+                    <div class="menu-items">
+                        <!-- Itens do menu serão inseridos via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cart" class="section">
+            <div class="cart">
+                <div class="container">
+                    <h2>Seu Pedido</h2>
+                    <div class="cart-container">
+                        <div class="cart-items">
+                            <!-- Itens do carrinho serão inseridos via JavaScript -->
+                        </div>
+                        <div class="cart-summary">
+                            <div class="summary-item">
+                                <span>Subtotal:</span>
+                                <span id="subtotal-price">0 CVE</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Taxa de entrega:</span>
+                                <span>200 CVE</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Total:</span>
+                                <span id="total-price">200 CVE</span>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-form">
+                            <h3>Informações de Entrega</h3>
+                            <div class="form-group">
+                                <label for="customer-name">Nome Completo *</label>
+                                <input type="text" id="customer-name" class="form-control" required placeholder="Seu nome completo">
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-phone">Telefone *</label>
+                                <input type="tel" id="customer-phone" class="form-control" required placeholder="Seu telefone">
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-address">Endereço de Entrega *</label>
+                                <textarea id="customer-address" class="form-control" rows="3" required placeholder="Endereço completo para entrega"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-notes">Observações (opcional)</label>
+                                <textarea id="customer-notes" class="form-control" rows="2" placeholder="Ex: sem cebola, ponto da carne, instruções especiais"></textarea>
+                            </div>
+                        </div>
+                        
+                        <button class="checkout-btn" id="checkout-btn" disabled>
+                            <i class="fab fa-whatsapp"></i>
+                            Finalizar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Confirmação-->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Pedido</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="order-summary">
+                <!-- Resumo do pedido será inserido aqui -->
+            </div>
+            
+            <div class="whatsapp-instructions">
+                <h4><i class="fab fa-whatsapp"></i> Instruções de Envio</h4>
+                <ol>
+                    <li>Clique no botão abaixo para abrir o WhatsApp</li>
+                    <li>Seu pedido estará pronto para envio</li>
+                    <li><strong>Pressione ENTER</strong> para enviar automaticamente</li>
+                </ol>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin: 0;">Seu pedido será processado imediatamente após o envio.</p>
+            </div>
+            
+            <button class="auto-send-btn" id="whatsapp-send-btn">
+                <i class="fab fa-whatsapp"></i> Enviar via WhatsApp
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+<script src="index.js"></script>
