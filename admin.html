@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Restaurante 24h</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #D4AF37;
+            --secondary: #FF6B35;
+            --dark: #1A1A1A;
+            --light: #FFF8F0;
+            --text: #2C2C2C;
+            --text-light: #5A5A5A;
+            --success: #25D366;
+            --danger: #FF4444;
+        }
+
+        body {
+            background: linear-gradient(135deg, #040407 0%, #e3dee7 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-container h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #101010 0%, #d6cede 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-container button:hover {
+            transform: translateY(-2px);
+        }
+
+        .admin-panel {
+            display: none;
+            background: white;
+            width: 100%;
+            max-width: 1400px;
+            min-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--dark) 0%, #333 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .admin-content {
+            padding: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f5c42b 0%, #e36738 50%, #f5a006 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-card-content {
+            padding: 20px;
+        }
+
+        .menu-card h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .menu-card .price {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .menu-card .category {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .menu-card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .menu-card-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #ccc;
+            color: var(--text);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login -->
+    <div class="login-container" id="loginContainer">
+        <h1><i class="fas fa-lock"></i> Acesso Admin</h1>
+        <input type="password" id="passwordInput" placeholder="Digite a senha" />
+        <button onclick="login()">Entrar</button>
+        <p style="margin-top: 15px; text-align: center; color: var(--text-light); font-size: 0.9rem;">
+             
+        </p>
+    </div>
+
+    <!-- Painel Admin -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h1><i class="fas fa-crown"></i> Painel Administrativo</h1>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+
+        <div class="admin-content">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalItems">0</h3>
+                    <p>Total de Itens</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalPratos">0</h3>
+                    <p>Pratos</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalBebidas">0</h3>
+                    <p>Bebidas</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalSobremesas">0</h3>
+                    <p>Sobremesas</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i> Adicionar Item
+                </button>
+                <button class="btn btn-secondary" onclick="exportData()">
+                    <i class="fas fa-download"></i> Exportar JSON
+                </button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                    <i class="fas fa-upload"></i> Importar JSON
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+            </div>
+
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Adicionar Item</h2>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label>Nome do Item</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="itemCategory" required>
+                        <option value="pratos">Pratos</option>
+                        <option value="bebidas">Bebidas</option>
+                        <option value="sobremesas">Sobremesas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Preço (CVE)</label>
+                    <input type="number" id="itemPrice" required min="0">
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="itemDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>URL da Imagem</label>
+                    <input type="text" id="itemImage" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="save-btn">Salvar</button>
+                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'admin123';
+        let menuItems = [];
+        let editingId = null;
+
+        // Carregar dados do localStorage
+        function loadData() {
+            const saved = localStorage.getItem('restaurante24h_menu');
+            if (saved) {
+                menuItems = JSON.parse(saved);
+            } else {
+                // Dados iniciais
+                menuItems = [
+                    {id: 1, name: "Cachupa Rica", category: "pratos", price: 850, description: "Prato tradicional cabo-verdiano com milho, feijão, carne e linguiça.", image: "./imagem/cachupa.jpg"},
+                    {id: 2, name: "Lagosta Grelhada", category: "pratos", price: 1200, description: "Lagosta fresca grelhada com manteiga de alho e ervas.", image: "./imagem/lagosta.jpg"},
+                    {id: 3, name: "Atum com Molho de Cebola", category: "pratos", price: 750, description: "Filé de atum grelhado com molho de cebola caseiro.", image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+                    {id: 4, name: "Frango Grelhado", category: "pratos", price: 650, description: "Frango grelhado com especiarias e acompanhamentos.", image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+                    {id: 5, name: "Pizza de Queijo", category: "pratos", price: 800, description: "Pizza com queijo derretido e molho de tomate caseiro.", image: "imagem/PizzaQ.jpg"},
+                    {id: 6, name: "Hambúrguer Especial", category: "pratos", price: 700, description: "Hambúrguer com carne 100% bovina, queijo e salada.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+                    {id: 7, name: "Sumo de Maracujá Natural", category: "bebidas", price: 200, description: "Sumo natural de maracujá com gelo.", image: "imagem/sumomaracujá.jpeg"},
+                    {id: 8, name: "Coca-Cola", category: "bebidas", price: 150, description: "Refrigerante Coca-Cola lata 330ml.", image: "imagem/cola.jpg"},
+                    {id: 9, name: "Água Mineral", category: "bebidas", price: 100, description: "Água mineral sem gás 500ml.", image: "imagem/agual.webp"},
+                    {id: 10, name: "Cerveja Strela", category: "bebidas", price: 180, description: "Cerveja nacional Strela garrafa 330ml.", image: "imagem/cerveja.jpg"},
+                    {id: 11, name: "Pudim de Coco", category: "sobremesas", price: 300, description: "Pudim de coco cremoso caseiro.", image: "imagem/pudim.jpg"},
+                    {id: 12, name: "Bolo de Bolacha", category: "sobremesas", price: 250, description: "Bolo de bolacha tradicional com café.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
+                ];
+                saveData();
+            }
+            renderMenu();
+            updateStats();
+        }
+
+        // Salvar dados
+        function saveData() {
+            localStorage.setItem('restaurante24h_menu', JSON.stringify(menuItems));
+        }
+
+        // Login
+        function login() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadData();
+            } else {
+                showNotification('Senha incorreta!', 'error');
+            }
+        }
+
+        // Logout
+        function logout() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // Renderizar menu
+        function renderMenu() {
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = '';
+            
+            menuItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="menu-card-content">
+                        <span class="category">${item.category}</span>
+                        <h3>${item.name}</h3>
+                        <p class="price">${item.price} CVE</p>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">${item.description}</p>
+                        <div class="menu-card-actions">
+                            <button class="edit-btn" onclick="editItem(${item.id})">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="delete-btn" onclick="deleteItem(${item.id})">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            document.getElementById('totalItems').textContent = menuItems.length;
+            document.getElementById('totalPratos').textContent = menuItems.filter(i => i.category === 'pratos').length;
+            document.getElementById('totalBebidas').textContent = menuItems.filter(i => i.category === 'bebidas').length;
+            document.getElementById('totalSobremesas').textContent = menuItems.filter(i => i.category === 'sobremesas').length;
+        }
+
+        // Abrir modal
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Adicionar Item';
+            document.getElementById('itemForm').reset();
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        // Editar item
+        function editItem(id) {
+            editingId = id;
+            const item = menuItems.find(i => i.id === id);
+            document.getElementById('modalTitle').textContent = 'Editar Item';
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemCategory').value = item.category;
+            document.getElementById('itemPrice').value = item.price;
+            document.getElementById('itemDescription').value = item.description;
+            document.getElementById('itemImage').value = item.image;
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        // Fechar modal
+        function closeModal() {
+            document.getElementById('itemModal').style.display = 'none';
+        }
+
+        // Salvar item
+        document.getElementById('itemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const item = {
+                id: editingId || Date.now(),
+                name: document.getElementById('itemName').value,
+                category: document.getElementById('itemCategory').value,
+                price: parseInt(document.getElementById('itemPrice').value),
+                description: document.getElementById('itemDescription').value,
+                image: document.getElementById('itemImage').value
+            };
+
+            if (editingId) {
+                const index = menuItems.findIndex(i => i.id === editingId);
+                menuItems[index] = item;
+                showNotification('Item atualizado com sucesso!');
+            } else {
+                menuItems.push(item);
+                showNotification('Item adicionado com sucesso!');
+            }
+
+            saveData();
+            renderMenu();
+            updateStats();
+            closeModal();
+        });
+
+        // Excluir item
+        function deleteItem(id) {
+            if (confirm('Tem certeza que deseja excluir este item?')) {
+                menuItems = menuItems.filter(i => i.id !== id);
+                saveData();
+                renderMenu();
+                updateStats();
+                showNotification('Item excluído com sucesso!');
+            }
+        }
+
+        // Exportar dados
+        function exportData() {
+            const dataStr = JSON.stringify(menuItems, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'cardapio-restaurante24h.json';
+            link.click();
+            showNotification('Dados exportados com sucesso!');
+        }
+
+        // Importar dados
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        menuItems = JSON.parse(e.target.result);
+                        saveData();
+                        renderMenu();
+                        updateStats();
+                        showNotification('Dados importados com sucesso!');
+                    } catch (error) {
+                        showNotification('Erro ao importar dados!', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Notificação
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = type === 'error' ? 'var(--danger)' : 'var(--success)';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Enter para login
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        // Fechar modal ao clicar fora
+        document.getElementById('itemModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
